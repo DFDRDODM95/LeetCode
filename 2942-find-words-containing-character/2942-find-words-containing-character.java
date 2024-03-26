@@ -1,11 +1,12 @@
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 class Solution {
     public List<Integer> findWordsContaining(String[] words, char x) {
-        List<Integer> ans = new ArrayList<>();
-        
-        for (int i = 0; i < words.length; i++) {
-            if (words[i].contains(x+"")) ans.add(i);
-        }
-        
-        return ans;
+        return IntStream.range(0, words.length)
+                        .filter(i -> words[i].contains(String.valueOf(x)))
+                        .boxed()
+                        .collect(Collectors.toList());
     }
 }
