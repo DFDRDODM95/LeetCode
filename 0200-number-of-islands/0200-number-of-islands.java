@@ -1,38 +1,46 @@
-import java.awt.*;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
+import java.io.*;
 
 class Solution {
-        public int numIslands(char[][] grid) {
-        int rows = grid.length;
-        int cols = grid[0].length;
-        int[][] vis = new int[rows][cols];
-
-        int[] dx = {1, 0, -1, 0};
-        int[] dy = {0, 1, 0, -1};
-
+    class Cell {
+        int r, c;
+        Cell(int r, int c) {
+            this.r = r;
+            this.c = c;
+        }
+    }
+    public int numIslands(char[][] grid) {
+        int[] dr = {0, 1, 0, -1};
+        int[] dc = {1, 0, -1, 0};
+        Queue<Cell> queue = new LinkedList<>();
+        
+        int r = grid.length;
+        int c = grid[0].length;
+        int[][] vis = new int[r][c];
+        
         int count = 0;
-        Queue<Point> queue = new LinkedList<Point>();
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
                 if (grid[i][j] != '0' && vis[i][j] != 1) {
-                    vis[i][j] = 1;
-                    queue.add(new Point(j, i));
                     count++;
+                    vis[i][j] = 1;
+                    queue.add(new Cell(i, j));
                     while(!queue.isEmpty()) {
-                        Point cur = queue.poll();
-                        for (int dir = 0; dir <4; dir++) {
-                            int nx = cur.x + dx[dir];
-                            int ny = cur.y + dy[dir];
-                            if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) continue;
-                            if (vis[ny][nx] == 1 || grid[ny][nx] == '0') continue;
-                            vis[ny][nx] = 1;
-                            queue.add(new Point(nx, ny));
+                        Cell cur = queue.poll();
+                        for (int dir = 0; dir < 4; dir++) {
+                            int nr = cur.r + dr[dir];
+                            int nc = cur.c + dc[dir];
+
+                            if (nr < 0 || nr >= r || nc < 0 || nc >= c) continue;
+                            if (vis[nr][nc] == 1 || grid[nr][nc] == '0') continue;
+                            vis[nr][nc] = 1;                            
+                            queue.add(new Cell(nr, nc));
                         }
                     }
-                }
+                } 
             }
         }
+        
         return count;
-        }
+    }
 }
